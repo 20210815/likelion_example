@@ -6,10 +6,19 @@ from comment.models import Comment
 from django.db.models import Count
 from user.models import User
 from like.models import PostLike
+from django.db.models import F, ExpressionWrapper, fields
+from django.utils import timezone
 # Create your views here.
 
 def list(request):
-  posts = Post.objects.all().order_by('-id')
+  posts = Post.objects.annotate(
+        time=ExpressionWrapper(
+            timezone.now() - F('created_at'),
+            output_field=fields.DurationField()
+        )
+    ).order_by('-id')
+  #posts = Post.objects.all().order_by('-id')
+  
   # print(request.user.post_user.all())
   #posts = Post.objects.annotate(comment_count=Count('comment')).order_by('-id')
   return render(request, 'board/list.html', {'posts': posts})
