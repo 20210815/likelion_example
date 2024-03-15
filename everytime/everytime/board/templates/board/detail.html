@@ -22,12 +22,17 @@
 
 
   <p>공감 {{post.post_like.all.count }}개</p>
-
+  <p>스크랩 {{post.scrap_users.count }}개</p>
   <form action="{% url 'board:post_like' post.id %}" method="post">
     {% csrf_token %}
     <button>공감</button>
   </form>
   
+
+  <form action="{% url 'board:post_scrap' post.id %}" method="post">
+    {% csrf_token %}
+    <button>스크랩</button>
+  </form>
 
   <hr>
   <h4>댓글</h4>

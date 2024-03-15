@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout
 from .forms import *
-from board.models import Post
+from board.models import Post, Scrap
 
 # Create your views here.
 
@@ -42,5 +42,14 @@ def mypage(request):
 
 
 def write_list(request):
-  posts = Post.objects.filter(user = request.user)
+  posts = request.user.post_user.all()
   return render(request, 'accounts/write_list.html', {'posts': posts})
+
+
+def scrap_list(request):
+  posts = request.user.scrap_users.all()
+  # scrap_post가 post를 fk로 갖고 있어서
+  print(posts)
+  #posts = Post.post_user.scrap_post.all()
+  #posts = Post.scrap_post.filter(user = request.user)
+  return render(request, 'accounts/scrap_list.html', {'posts': posts})

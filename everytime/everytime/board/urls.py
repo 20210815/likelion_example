@@ -13,5 +13,7 @@ urlpatterns = [
   path('<int:id>/comment_create/', views.com_create, name="com_create"),
   path('<int:post_id>/comment_delete/<int:com_id>/', views.com_delete, name="com_delete"),
   path('<int:post_id>/like', views.post_like, name="post_like"),
+  path('<int:post_id>/scrap', views.post_scrap, name="post_scrap"),
+  
 
 ]

@@ -1,6 +1,6 @@
 from asyncio.windows_events import NULL
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Post, ComCount
+from .models import Post, ComCount, Scrap
 from django.contrib.auth.decorators import login_required
 from comment.models import Comment
 from django.db.models import Count
@@ -125,5 +125,19 @@ def post_like(request, post_id):
     
   else:
     PostLike.objects.create(post=post, user=user)
+    
+  return redirect("board:detail", post_id)
+
+
+@login_required
+def post_scrap (request, post_id):
+  post = Post.objects.get(pk=post_id)
+  user = request.user
+
+  if Scrap.objects.filter(post=post, user=user).exists():
+    Scrap.objects.filter(post=post, user=user).delete()
+    
+  else:
+    Scrap.objects.create(post=post, user=user)
     
   return redirect("board:detail", post_id)

@@ -8,10 +8,15 @@ class Post(models.Model):
   created_at = models.DateTimeField(auto_now_add=True) #생성일자
   user = models.ForeignKey(User, related_name="post_user", on_delete=models.CASCADE)
   anonymity = models.BooleanField(default="True")
+  scrap_users = models.ManyToManyField(to=User, through="Scrap", related_name="scrap_users")
 
   def __str__(self):
     return f'[{self.id}-{self.title}]'
-  
+
+class Scrap(models.Model):
+  user = models.ForeignKey(to=User, on_delete=models.CASCADE)
+  post = models.ForeignKey(to=Post, on_delete=models.CASCADE)
+
 
 #익댓 count
 class ComCount(models.Model):
