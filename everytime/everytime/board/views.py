@@ -124,6 +124,6 @@ def post_like(request, post_id):
     PostLike.objects.filter(post=post, user=user).delete()
     
   else:
-    postlike = PostLike.objects.create(post=post, user=user)
+    PostLike.objects.create(post=post, user=user)
     
   return redirect("board:detail", post_id)
