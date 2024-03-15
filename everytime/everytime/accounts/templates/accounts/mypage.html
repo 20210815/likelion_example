@@ -9,5 +9,10 @@
     <p>username : {{ request.user.username }}</p>
     <p>email : {{request.user.email }}</p>
     <p>nickname : {{ request.user.nickname }}</p>
+
+    <hr>
+    <br>
+    <!--내가 작성한 글, 내가 스크랩한 글-->
+    <a href="{% url 'accounts:write_list' %}">내가 작성한 글</a>
 </body>
 </html>

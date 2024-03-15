@@ -36,3 +36,11 @@ def logout_view(request):
   if request.user.is_authenticated:
     logout(request)
   return redirect("board:list")
+
+def mypage(request):
+  return render(request, 'accounts/mypage.html')
+
+
+def write_list(request):
+  posts = Post.objects.filter(user = request.user)
+  return render(request, 'accounts/write_list.html', {'posts': posts})
