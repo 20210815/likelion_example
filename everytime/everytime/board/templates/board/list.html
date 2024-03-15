@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>list</title>
+</head>
+<body>
+  <a href="{% url 'accounts:signup' %}">회원가입</a>
+  <a href="{% url 'accounts:login' %}">로그인</a>
+  <a href="{% url 'accounts:logout' %}">로그아웃</a>
+  <br>
+  <a href="{% url 'board:create' %}">글 작성하기</a>
+  {% if posts.exists %}
+    {% for post in posts %}
+    <a href="{% url 'board:detail' post.pk %}"><h1>{{ post.title }}</h1></a>
+      <br>
+      <h4> {{ post.content }}</h4> <br>
+      <h4> {{ post.created_at }}</h4><br>
+      <!-- <h4> 댓글 {{ post.comment_count }}개</h4> -->
+      <!-- <h4> 댓글 {{ post.post_set.all }}개</h4> -->
+      <h4> 댓글 {{ post.posts.all.count }}</h4> <!--여기서.나를 역참조할 때 이름-->
+      <hr>
+    {% endfor %}
+  <br>
+ {% else %}
+ <h1>글이 없습니다.</h1>
+ {% endif %}
+</body>
+</html>

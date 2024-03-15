@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>글 상세</title>
+</head>
+<body>
+  <h1>{{ post.title }}</h1> <br>
+  <h2>{{ post.content }} </h2> <br>
+  <h2>{{ post.created_at }}</h2>
+  {% if post.anonymity == True %}익명
+  {% else %}
+    <h5>{{ post.user }}</h5>
+  {% endif %}
+  {% if request.user == post.user %} <a href="{% url 'board:update' post.id %}">수정하기</a> {% endif %}
+  {% if request.user == post.user %} <a href="{% url 'board:delete' post.id %}">삭제하기</a> {% endif %}
+
+  공감 {{post.post_like_user.all.count }}개
+  <p>공감</p>
+
+  <hr>
+  <h4>댓글</h4>
+  {% if comments.exists %} 
+      {% for comment in comments %}
+      <br>
+        {{ comment.content }} -   
+        {% if comment.anonymity == True %}익명
+        {% for count in com_count %}
+          {% if comment.user == count.user %}
+            {{ count.order }}
+          {% endif %}
+        {% endfor %}
+
+        {% else %}
+          <h5>{{ comment.user }}</h5>
+        {% endif %}
+        - {{ comment.created_at }}
+        <br>
+        {% if request.user == comment.user %} <a href="{% url 'board:com_delete' com_id=comment.id post_id=post.id %}">삭제하기</a> {% endif %}
+        {% endfor %}
+  
+  {% else %}
+  댓글이 없습니다.
+  {% endif %}
+  <hr>
+  <form action="{% url 'board:com_create' post.id %}" method="POST">
+    {% csrf_token %}
+    <input type="text" name="content">
+    <input type="submit" value="작성">
+    <input type="checkbox" name="anonymity" value="annoymity_true" checked>익명
+
+  </form>
+</body>
+</html>
