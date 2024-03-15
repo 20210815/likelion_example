@@ -6,6 +6,10 @@
   <title>글 상세</title>
 </head>
 <body>
+  <a href="{% url 'board:list' %}">뒤로가기</a>
+
+
+
   <h1>{{ post.title }}</h1> <br>
   <h2>{{ post.content }} </h2> <br>
   <h2>{{ post.created_at }}</h2>
@@ -16,8 +20,14 @@
   {% if request.user == post.user %} <a href="{% url 'board:update' post.id %}">수정하기</a> {% endif %}
   {% if request.user == post.user %} <a href="{% url 'board:delete' post.id %}">삭제하기</a> {% endif %}
 
-  공감 {{post.post_like_user.all.count }}개
-  <p>공감</p>
+
+  <p>공감 {{post.post_like.all.count }}개</p>
+
+  <form action="{% url 'board:post_like' post.id %}" method="post">
+    {% csrf_token %}
+    <button>공감</button>
+  </form>
+  
 
   <hr>
   <h4>댓글</h4>

@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from comment.models import Comment
 from django.db.models import Count
 from user.models import User
+from like.models import PostLike
 # Create your views here.
 
 def list(request):
@@ -105,5 +106,15 @@ def com_count(post_id, request):
     # Save the com_count instance
     
 
+@login_required
+def post_like(request, post_id):
+  post = Post.objects.get(pk=post_id)
+  user = request.user
 
-  
+  if PostLike.objects.filter(post=post, user=user).exists():
+    PostLike.objects.filter(post=post, user=user).delete()
+    
+  else:
+    postlike = PostLike.objects.create(post=post, user=user)
+    
+  return redirect("board:detail", post_id)
