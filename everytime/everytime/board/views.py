@@ -4,6 +4,7 @@ from .models import Post, ComCount, Scrap, PostLike
 from django.contrib.auth.decorators import login_required
 from comment.models import Comment
 from django.db.models import Count
+from category.models import Category
 from user.models import User
 from django.db.models import F, ExpressionWrapper, fields
 from django.utils import timezone
@@ -142,3 +143,9 @@ def post_scrap (request, post_id):
     # Scrap.objects.create(post=post, user=user)
     
   return redirect("board:detail", post_id)
+
+
+def home(request):
+  category_list = Category.objects.all()
+
+  return render(request, "board/home.html", {'category_list': category_list})

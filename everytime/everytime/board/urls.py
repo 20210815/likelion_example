@@ -5,7 +5,8 @@ app_name='board'
 
 
 urlpatterns = [
-  path('', views.list, name="list"),
+  path('', views.home, name='home'),
+  path('list/', views.list, name="list"),
   path('<int:id>/', views.detail, name="detail"),
   path('create/', views.create, name="create"),
   path('update/<int:id>/', views.update, name="update"),
