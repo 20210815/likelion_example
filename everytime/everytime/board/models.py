@@ -9,6 +9,7 @@ class Post(models.Model):
   user = models.ForeignKey(User, related_name="post_user", on_delete=models.CASCADE)
   anonymity = models.BooleanField(default="True")
   scrap_users = models.ManyToManyField(to=User, through="Scrap", related_name="scrap_users")
+  like_users = models.ManyToManyField(to=User, through="PostLike", related_name="post_like_users")
 
   def __str__(self):
     return f'[{self.id}-{self.title}]'
@@ -16,6 +17,10 @@ class Post(models.Model):
 class Scrap(models.Model):
   user = models.ForeignKey(to=User, on_delete=models.CASCADE)
   post = models.ForeignKey(to=Post, on_delete=models.CASCADE)
+
+class PostLike(models.Model):
+  user = models.ForeignKey(to=User, related_name= 'post_like_user', on_delete=models.CASCADE)
+  post = models.ForeignKey(to=Post, related_name="post_like", on_delete=models.CASCADE)
 
 
 #익댓 count

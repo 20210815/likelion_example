@@ -1,11 +1,10 @@
 from asyncio.windows_events import NULL
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Post, ComCount, Scrap
+from .models import Post, ComCount, Scrap, PostLike
 from django.contrib.auth.decorators import login_required
 from comment.models import Comment
 from django.db.models import Count
 from user.models import User
-from like.models import PostLike
 from django.db.models import F, ExpressionWrapper, fields
 from django.utils import timezone
 # Create your views here.
@@ -120,11 +119,12 @@ def post_like(request, post_id):
   post = Post.objects.get(pk=post_id)
   user = request.user
 
-  if PostLike.objects.filter(post=post, user=user).exists():
-    PostLike.objects.filter(post=post, user=user).delete()
+  if post.like_users.filter(pk=user.pk).exists():
+    post.like_users.remove(user)
     
   else:
-    PostLike.objects.create(post=post, user=user)
+    #관계 설정
+    post.like_users.add(user)
     
   return redirect("board:detail", post_id)
 
@@ -134,10 +134,11 @@ def post_scrap (request, post_id):
   post = Post.objects.get(pk=post_id)
   user = request.user
 
-  if Scrap.objects.filter(post=post, user=user).exists():
-    Scrap.objects.filter(post=post, user=user).delete()
+  if post.scrap_users.filter(pk=user.pk).exists():
+    post.scrap_users.remove(user)
     
   else:
-    Scrap.objects.create(post=post, user=user)
+    post.scrap_users.add(user)
+    # Scrap.objects.create(post=post, user=user)
     
   return redirect("board:detail", post_id)
