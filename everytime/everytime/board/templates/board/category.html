@@ -1,4 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <h1>{{ category.title }} </h1>
 
+  <div>
+    
 {% load static %}
 {% load humanize %}
 {% if request.user.is_authenticated %}
@@ -10,7 +21,16 @@
     <a href="{% url 'accounts:login' %}">로그인</a>
     {% endif %}
     <br>
-    <a href="{% url 'board:create' %}">글 작성하기</a>
+    <form action="{% url 'board:create' category.slug %}" method="post">
+      {% csrf_token %}
+      <input type="text" name="title">
+      <hr>
+      <br>
+      <textarea name="content"></textarea>
+      <input type="checkbox" name="anonymity" value="annoymity_true" checked>익명
+      <!-- <input type="hidden" name="anonymity" value="annoymity_false" checked> -->
+      <input type="submit" value="작성 완료">
+    </form>
     
       {% if posts.exists %}
         {% for post in posts %}
@@ -38,3 +58,6 @@
     {% else %}
     <h1>글이 없습니다.</h1>
     {% endif %}
+  </div>
+</body>
+</html>

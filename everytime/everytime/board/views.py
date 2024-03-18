@@ -21,7 +21,7 @@ def list(request):
   
   # print(request.user.post_user.all())
   #posts = Post.objects.annotate(comment_count=Count('comment')).order_by('-id')
-  return render(request, 'board/list.html', {'posts': posts})
+  return render(request, 'board/category.html', {'posts': posts})
 
 def detail(request, id):
   post = get_object_or_404(Post, pk=id)
@@ -32,20 +32,22 @@ def detail(request, id):
 
 
 @login_required
-def create(request):
+def create(request, slug):
   if request.method == "POST":
     new_post = Post()
     new_post.title = request.POST['title']
     new_post.content = request.POST['content']
     new_post.user = request.user
+    new_post.category = Category.objects.get(slug=slug)
     print(request.POST.get('anonymity'))
     if request.POST.get('anonymity') == None:
       new_post.anonymity = False
       new_post.save()
     new_post.save()
+    return redirect("board:category_post_list", slug)
+  else:
+    return render(request, "board/create.html", {'slug':slug} )
 
-    return redirect("board:list")
-  return render(request, "board/create.html")
 
 @login_required
 def update(request, id):
@@ -62,8 +64,10 @@ def update(request, id):
 
 def delete(request,id):
   post = get_object_or_404(Post, pk=id)
+  category = post.category.slug
+  print(category)
   post.delete()
-  return redirect("board:list")
+  return redirect("board:category_post_list", category)
 
 @login_required
 def com_create(request, id):
@@ -147,5 +151,12 @@ def post_scrap (request, post_id):
 
 def home(request):
   category_list = Category.objects.all()
-
+  
   return render(request, "board/home.html", {'category_list': category_list})
+
+
+def category_post_list(request, slug):
+  category = Category.objects.get(slug=slug)
+  posts = Post.objects.filter(category = category).order_by('-id')
+
+  return render(request, "board/category.html", {'category': category, 'posts':posts})
