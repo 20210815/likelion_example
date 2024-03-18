@@ -157,6 +157,7 @@ def home(request):
 
 def category_post_list(request, slug):
   category = Category.objects.get(slug=slug)
+  category_list = Category.objects.all()
   posts = Post.objects.filter(category = category).order_by('-id')
 
-  return render(request, "board/category.html", {'category': category, 'posts':posts})
+  return render(request, "board/category.html", {'category': category, 'posts':posts, 'category_list': category_list})
