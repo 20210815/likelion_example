@@ -1,4 +1,13 @@
+{% include "board/menu.html" %}
 
-{% for category in category_list %}
-<a href="{% url 'board:category_post_list' category.slug %}">{{category.title}}</a>
-{% endfor %}
+<p> 
+  {% for category in category_list %}
+  <h1><a href="{% url 'board:category_post_list' category.slug %}">{{category.title}}</a></h1>
+      {% for post in recent_posts %}
+        {% if post.category.title == category.title %}
+          <p><a href="{% url 'board:detail' post.id %}">{{ post.title }}</a></p>
+        {% endif %}
+      {% endfor %}
+    <hr>
+  {% endfor %}
+</p>

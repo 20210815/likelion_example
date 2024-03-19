@@ -1,0 +1,4 @@
+
+{% for category in category_list %}
+<a href="{% url 'board:category_post_list' category.slug %}">{{category.title}}</a>
+{% endfor %}

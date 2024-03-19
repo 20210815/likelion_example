@@ -150,9 +150,13 @@ def post_scrap (request, post_id):
 
 
 def home(request):
-  category_list = Category.objects.all()
-  
-  return render(request, "board/home.html", {'category_list': category_list})
+    # 최근 게시물
+    recent_posts = []
+    category_list = Category.objects.all()
+    for category in category_list:
+        posts = Post.objects.filter(category=category).order_by('-created_at')[:4]
+        recent_posts.extend(posts)
+    return render(request, "board/home.html", {'category_list': category_list, 'recent_posts': recent_posts})
 
 
 def category_post_list(request, slug):
