@@ -5,10 +5,10 @@
     <a href="{% url 'accounts:logout' %}">로그아웃</a>
     <a href="{% url 'accounts:mypage' %}">마이페이지</a>
 
-    {% else %}
+{% else %}
     <a href="{% url 'accounts:signup' %}">회원가입</a>
     <a href="{% url 'accounts:login' %}">로그인</a>
-    {% endif %}
+{% endif %}
     <br>
     <a href="{% url 'board:create' %}">글 작성하기</a>
     

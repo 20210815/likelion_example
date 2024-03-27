@@ -1,5 +1,19 @@
 {% include "board/menu.html" %}
+{% if request.user.is_authenticated %}
+  <p>nickname : {{ request.user.nickname }}</p>
+  <hr>
+  <br>
+  <a href="{% url 'accounts:mypage' %}">마이페이지</a>
+  <a href="{% url 'accounts:logout' %}">로그아웃</a>
 
+  <hr>
+  <!--내가 작성한 글, 내가 스크랩한 글-->
+  <a href="{% url 'accounts:write_list' %}">내가 작성한 글</a>
+  <a href="{% url 'accounts:scrap_list' %}">내가 스크랩한 글</a>
+{% else %}
+  <a href="{% url 'accounts:signup' %}">회원가입</a>
+  <a href="{% url 'accounts:login' %}">로그인</a>
+{% endif %}
 <p> 
   {% for category in category_list %}
   <h1><a href="{% url 'board:category_post_list' category.slug %}">{{category.title}}</a></h1>
