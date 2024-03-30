@@ -28,14 +28,14 @@ def login_view(request):
 
   if form.is_valid():
     login(request, form.user_cache)
-    return redirect("board:list")
+    return redirect("board:home")
   return render(request, 'accounts/login.html', {'form': form})
 
 
 def logout_view(request):
   if request.user.is_authenticated:
     logout(request)
-  return redirect("board:list")
+  return redirect("board:home")
 
 def mypage(request):
   return render(request, 'accounts/mypage.html')
